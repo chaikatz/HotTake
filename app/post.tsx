@@ -553,7 +553,7 @@ function SayIt(props: {
 function Posted({ spicy, rating, onDone, subjectId }: { spicy: boolean; rating: number; onDone: () => void; subjectId: string }) {
   const insets = useSafeAreaInsets();
   useEffect(() => {
-    const id = setTimeout(onDone, spicy ? 2600 : 1600);
+    const id = setTimeout(onDone, spicy ? 3000 : 2200);
     return () => clearTimeout(id);
   }, [onDone, spicy]);
   return (

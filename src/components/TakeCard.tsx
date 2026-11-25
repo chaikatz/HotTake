@@ -126,7 +126,19 @@ function TakeCardImpl({ take, hideSubject, compact }: Props) {
         </View>
       ) : null}
 
-      {!compact ? (
+      {!compact && take.is_mine ? (
+        <View style={styles.mineRow}>
+          <Text style={styles.mineStat}>🙌 {take.agree_count} agree</Text>
+          <Text style={styles.mineStat}>🙅 {take.disagree_count} disagree</Text>
+          {hideSubject ? (
+            <Pressable onPress={() => openTakeMenu(take)} hitSlop={12} style={styles.moreInline}>
+              <Ionicons name="ellipsis-horizontal" size={18} color={colors.inkFaint} />
+            </Pressable>
+          ) : null}
+        </View>
+      ) : null}
+
+      {!compact && !take.is_mine ? (
         <View style={styles.reactions}>
           <ReactionButton
             label="Agree"
@@ -217,6 +229,8 @@ const styles = StyleSheet.create({
   more: { paddingLeft: 12, paddingVertical: 4 },
   moreInline: { marginLeft: "auto", paddingHorizontal: 6, paddingVertical: 8 },
   reactions: { flexDirection: "row", gap: 8, marginTop: 12 },
+  mineRow: { flexDirection: "row", alignItems: "center", gap: 14, marginTop: 12 },
+  mineStat: { fontSize: 13, fontWeight: "700", color: colors.inkSoft },
   reaction: {
     flexDirection: "row",
     alignItems: "center",
