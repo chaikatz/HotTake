@@ -2,17 +2,30 @@
 //
 // The app tries a real SMS code first. When Supabase has no SMS provider it
 // falls back to this: the tester enters their phone number and the shared
-// TESTER CODE (secret TEST_LOGIN_CODE). We create or find the auth user for
+// tester code (stored in private.settings, key 'tester_code'). We create or find the auth user for
 // that phone (phone marked confirmed, so real SMS sign-in later finds the same
 // account), set a throwaway password on a hidden email identity, sign in, and
 // hand the session back.
 //
-// TURN OFF before real launch: delete the TEST_LOGIN_CODE secret (this then
-// refuses every request), or delete this function.
+// TURN OFF before real launch: run
+//   delete from private.settings where key = 'tester_code';
+// (this then refuses every request), or delete this function.
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.119.2";
-import { corsHeaders, json } from "../_shared/cors.ts";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
+function json(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
 
 function randomPassword(): string {
   const bytes = new Uint8Array(24);
@@ -20,19 +33,9 @@ function randomPassword(): string {
   return btoa(String.fromCharCode(...bytes));
 }
 
-function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
-}
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
-
-  const secret = Deno.env.get("TEST_LOGIN_CODE");
-  if (!secret) return json({ error: "Tester sign-in is switched off." }, 403);
 
   let body: { phone?: string; code?: string };
   try {
@@ -43,14 +46,21 @@ Deno.serve(async (req) => {
   const digits = (body.phone ?? "").replace(/\D/g, "");
   const code = (body.code ?? "").trim();
   if (digits.length < 8 || digits.length > 15) return json({ error: "That phone number doesn't look right." }, 400);
-  if (!timingSafeEqual(code, secret)) {
-    await new Promise((r) => setTimeout(r, 600));
-    return json({ error: "Wrong tester code." }, 401);
-  }
 
   const url = Deno.env.get("SUPABASE_URL")!;
   const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
   const anon = createClient(url, Deno.env.get("SUPABASE_ANON_KEY")!, { auth: { persistSession: false } });
+
+  const { data: matches, error: codeError } = await admin.rpc("tester_code_matches", { p_code: code });
+  if (codeError) {
+    console.error("code check failed", codeError);
+    return json({ error: "Couldn't sign you in." }, 500);
+  }
+  if (matches === null) return json({ error: "Tester sign-in is switched off." }, 403);
+  if (matches !== true) {
+    await new Promise((r) => setTimeout(r, 600));
+    return json({ error: "Wrong tester code." }, 401);
+  }
 
   const email = `p${digits}@testers.hottake.app`;
   const password = randomPassword();

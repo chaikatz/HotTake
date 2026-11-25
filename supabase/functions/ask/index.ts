@@ -14,8 +14,20 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.119.2";
 import Anthropic from "npm:@anthropic-ai/sdk@1.14.0";
-import { corsHeaders, json } from "../_shared/cors.ts";
 import { parseQuestion } from "./retrieval.ts";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
+function json(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
 
 const NO_TAKES = "No takes on that yet.";
 const MODEL = Deno.env.get("HOTTAKE_AI_MODEL") ?? "claude-opus-5-5";

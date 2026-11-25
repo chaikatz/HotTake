@@ -98,8 +98,6 @@ const CATEGORY_WORDS: Record<string, string[]> = {
   movies: ["film"],
   film: ["film"],
   films: ["film"],
-  show: ["film"],
-  shows: ["film"],
   tv: ["film"],
   series: ["film"],
   product: ["product"],
