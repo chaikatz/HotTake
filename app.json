@@ -1,0 +1,73 @@
+{
+  "expo": {
+    "name": "Hot Take",
+    "slug": "hot-take",
+    "version": "1.0.0",
+    "scheme": "hottake",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.hottake.app",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Hot Take lets you add photos to your takes. Only the photos you pick are uploaded.",
+        "NSCameraUsageDescription": "Hot Take lets you snap a photo for your take.",
+        "NSLocationWhenInUseUsageDescription": "Hot Take uses your location to center the map and answer \"near me\" questions. It is never stored on your profile.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.hottake.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#FF3B30",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-image",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#FF3B30"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Hot Take lets you add photos to your takes. Only the photos you pick are uploaded.",
+          "cameraPermission": "Hot Take lets you snap a photo for your take."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Hot Take uses your location to center the map and answer \"near me\" questions. It is never stored on your profile."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    },
+    "extra": {
+      "router": {}
+    }
+  }
+}
