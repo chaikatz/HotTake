@@ -24,7 +24,7 @@
       "autoIncrement": true,
       "channel": "production",
       "env": {
-        "EXPO_PUBLIC_ALLOW_TEST_LOGIN": "0"
+        "EXPO_PUBLIC_ALLOW_TEST_LOGIN": "1"
       }
     }
   },

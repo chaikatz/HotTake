@@ -12,7 +12,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.hottake.app",
+      "bundleIdentifier": "com.chaikatz.hottake",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Hot Take lets you add photos to your takes. Only the photos you pick are uploaded.",
         "NSCameraUsageDescription": "Hot Take lets you snap a photo for your take.",
@@ -21,7 +21,7 @@
       }
     },
     "android": {
-      "package": "com.hottake.app",
+      "package": "com.chaikatz.hottake",
       "adaptiveIcon": {
         "backgroundColor": "#FF3B30",
         "foregroundImage": "./assets/android-icon-foreground.png",

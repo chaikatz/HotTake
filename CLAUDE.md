@@ -33,7 +33,8 @@ switches to tester mode and the `test-login` function accepts the shared tester 
 delete from private.settings where key = 'tester_code';
 ```
 
-and set `EXPO_PUBLIC_ALLOW_TEST_LOGIN=0` (already 0 in the EAS production profile).
+and set `EXPO_PUBLIC_ALLOW_TEST_LOGIN=0` in the production profile in `eas.json` (it's 1 during the
+TestFlight phase).
 
 ## Useful commands
 

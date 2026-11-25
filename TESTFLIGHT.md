@@ -5,7 +5,7 @@ module and the real app icon, and lets friends install without Expo Go.
 
 | | |
 | --- | --- |
-| Bundle ID | `com.hottake.app` (change in `app.json` if you register a different one) |
+| Bundle ID | `com.chaikatz.hottake` (change in `app.json` if you register a different one) |
 | Display name | `Hot Take` |
 | EAS project | `@chaikatz/hot-take` (`94b9399f-5d1e-4dfd-9e4c-565cb1caa52d`) |
 | Build number | managed by EAS (`appVersionSource: remote`, `autoIncrement: true`) |
@@ -13,9 +13,9 @@ module and the real app icon, and lets friends install without Expo Go.
 
 ## Steps
 
-1. **Apple Developer** → Identifiers → register `com.hottake.app` (or let EAS do it in step 3).
+1. **Apple Developer** → Identifiers → register `com.chaikatz.hottake` (or let EAS do it in step 3).
 2. **App Store Connect** → My Apps → **+** → New App → iOS, name "Hot Take" (if taken, e.g.
-   "Hot Take: Real Opinions"), bundle ID `com.hottake.app`, SKU `hottake`.
+   "Hot Take: Real Opinions"), bundle ID `com.chaikatz.hottake`, SKU `hottake`.
 3. On your computer, in this folder:
 
    ```bash
@@ -37,10 +37,10 @@ module and the real app icon, and lets friends install without Expo Go.
 
 ## Before TestFlight friends sign up
 
-- The production profile sets `EXPO_PUBLIC_ALLOW_TEST_LOGIN=0`, so production builds only accept
-  **real SMS codes**. Turn on Supabase phone auth + Twilio first (README → "Turn on real SMS").
-  For a quick internal test before SMS works, build the `preview` profile instead
-  (`eas build --platform ios --profile preview`), which keeps tester sign-in.
+- During the TestFlight phase the production profile keeps tester sign-in available
+  (`EXPO_PUBLIC_ALLOW_TEST_LOGIN=1`); it only works while `private.settings.tester_code` exists,
+  so the real switch is server-side. Before the App Store launch set it to `0` in `eas.json`
+  and delete the tester code.
 
 ## Before App Store review (not TestFlight blockers)
 
