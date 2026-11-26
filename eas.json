@@ -29,6 +29,11 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "ascAppId": "6839486265",
+        "appleTeamId": "P325M2W56V"
+      }
+    }
   }
 }
